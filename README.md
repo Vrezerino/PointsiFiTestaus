@@ -10,13 +10,13 @@
 
 2. Kloonaa repo ja avaa kansio
 
-   ```bash
-   git clone https://github.com/Vrezerino/PointsiFiTestaus.git
-   cd .\PointsiFiTestaus\
-   ```
+  ```bash
+  git clone https://github.com/Vrezerino/PointsiFiTestaus.git
+  cd .\PointsiFiTestaus\
+  ```
 
 3. Suorita test_pointsi_fi.py
 
-   ```bash
+  ```bash
   python test_pointsi_fi.py
-   ```
+  ```
