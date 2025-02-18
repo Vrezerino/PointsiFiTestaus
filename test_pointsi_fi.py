@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import unittest
 import time
 
+
 class TestPointsiFi(unittest.TestCase):
 
     @classmethod
@@ -102,7 +103,7 @@ class TestPointsiFi(unittest.TestCase):
         )
         ISO9001_korttiotsikko.click()
 
-        ### Ilmoittautumislomake ###
+        ### Ilmoittautumislomake
 
         # Harhaanjohtava id, pitäisi olla esim. "kokonimi"
         nimikentta = self.driver.find_element(By.ID, "form-field-etunimi")
@@ -119,7 +120,7 @@ class TestPointsiFi(unittest.TestCase):
         puhelinnumerokentta.send_keys("000 0000000")
 
         emailkentta = self.driver.find_element(By.ID, "form-field-email")
-        emailkentta.send_keys("000 0000000")
+        emailkentta.send_keys("testi@testi.fi")
 
         lisatietokentta = self.driver.find_element(By.ID, "form-field-message")
         lisatietokentta.send_keys("Abc 123")
@@ -132,14 +133,57 @@ class TestPointsiFi(unittest.TestCase):
             const lomake = arguments[0];
             lomake.onsubmit = function(event) {
               event.preventDefault();
-              console.log('Lomakkeen lähetys toimii');
+              console.log('Koulutuslomakkeen lähetys toimii');
             };
           """,
             lomake,
         )
 
         lomake.submit()
-        print("Lomakkeen tiedot 'lähetetty'")
+        print("Koulutuslomakkeen tiedot 'lähetetty'")
+
+    def test_markoon_voi_ottaa_yhteytta(self):
+        yhteystiedot_li = self.driver.find_element(By.XPATH, "//ul/li[6]")
+        yhteystiedot_li.click()
+
+        yhteysotsikko = self.driver.find_element(By.XPATH, "//h2[text()='Ota yhteyttä']")
+        self.driver.execute_script("arguments[0].scrollIntoView();", yhteysotsikko)
+
+        ### Yhteyslomake 
+
+        # Saisi olla form-field-etunimi
+        etunimikentta = self.driver.find_element(By.ID, "form-field-name")
+        etunimikentta.send_keys("Etunimi")
+
+        # Saisi olla form-field-sukunimi
+        sukunimikentta = self.driver.find_element(By.ID, "form-field-62b226f")
+        sukunimikentta.send_keys("Sukunimi")
+
+        puhnrokentta = self.driver.find_element(By.ID, "form-field-field_c874d97")
+        puhnrokentta.send_keys("000 0000000")
+
+        emailkentta = self.driver.find_element(By.ID, "form-field-email")
+        emailkentta.send_keys("testi@testi.fi")
+
+        viestikentta = self.driver.find_element(By.ID, "form-field-message")
+        viestikentta.send_keys("Hei Marko!")
+
+        lomake = self.driver.find_element(By.NAME, "Contact")
+
+        # Testaa että lomakkeen lähetys toimii ilman että tietoja oikeasti lähetetään
+        self.driver.execute_script(
+            """
+            const lomake = arguments[0];
+            lomake.onsubmit = function(event) {
+              event.preventDefault();
+              console.log('Yhteyslomakkeen lähetys toimii');
+            };
+          """,
+            lomake,
+        )
+
+        lomake.submit()
+        print("Yhteyslomakkeen tiedot 'lähetetty'")
 
     @classmethod
     def tearDownClass(cls):
